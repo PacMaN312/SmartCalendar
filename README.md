@@ -1,4 +1,4 @@
-# CalendarApp
+# SmartCalendar
 
 ## Опис проєкту
 SmartCalendar — це настільний додаток на Python з використанням Tkinter, який дозволяє:
