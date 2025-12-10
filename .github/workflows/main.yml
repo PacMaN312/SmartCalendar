@@ -1,0 +1,47 @@
+name: CI/CD – SmartCalendar (Python)
+
+on:
+  push:
+    branches:
+      - main
+      - master
+      - dev
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Print commit author
+        run: |
+          echo "Author: ${{ github.event.head_commit.author.name }}"
+          echo "Email:  ${{ github.event.head_commit.author.email }}"
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: (Optional) Run tests
+        run: |
+          # тут можна запустити тести, якщо є
+          echo "No tests configured"
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v1.0.${{ github.run_number }}
+          name: "Auto Release ${{ github.run_number }}"
+          body: |
+            Automated release for SmartCalendar.
+            Commit SHA: ${{ github.sha }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
