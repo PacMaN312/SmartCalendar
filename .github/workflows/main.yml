@@ -7,6 +7,9 @@ on:
       - master
       - dev
 
+permissions:
+  contents: write
+
 jobs:
   build-and-release:
     runs-on: ubuntu-latest
@@ -30,18 +33,13 @@ jobs:
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-      - name: (Optional) Run tests
-        run: |
-          # тут можна запустити тести, якщо є
-          echo "No tests configured"
-
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: v1.0.${{ github.run_number }}
           name: "Auto Release ${{ github.run_number }}"
           body: |
-            Automated release for SmartCalendar.
-            Commit SHA: ${{ github.sha }}
+            Automated release.
+            Commit: ${{ github.sha }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
